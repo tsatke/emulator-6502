@@ -245,11 +245,15 @@ impl Cpu {
     }
 
     fn execute_bvc(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| !cpu.status.contains(ProcessorStatus::Overflow));
     }
 
     fn execute_bvs(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| cpu.status.contains(ProcessorStatus::Overflow));
     }
 
     fn execute_clc(&mut self, addressing_mode: AddressingMode) {
