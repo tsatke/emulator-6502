@@ -86,65 +86,65 @@ impl Cpu {
             }
         };
 
-        let handler = match instruction.opcode {
-            Opcode::Adc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::And => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Asl => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bcc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bcs => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Beq => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bit => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bmi => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bne => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bpl => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Brk => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bvc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Bvs => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Clc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Cld => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Cli => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Clv => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Cmp => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Cpx => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Cpy => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Dec => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Dex => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Dey => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Eor => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Inc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Inx => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Iny => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Jmp => Self::execute_jmp,
-            Opcode::Jsr => Self::execute_jsr,
-            Opcode::Lda => Self::execute_lda,
-            Opcode::Ldx => Self::execute_ldx,
-            Opcode::Ldy => Self::execute_ldy,
-            Opcode::Lsr => Self::execute_lsr,
-            Opcode::Nop => Self::execute_nop,
-            Opcode::Ora => Self::execute_ora,
-            Opcode::Pha => Self::execute_pha,
-            Opcode::Php => Self::execute_php,
-            Opcode::Pla => Self::execute_pla,
-            Opcode::Plp => Self::execute_plp,
-            Opcode::Rol => Self::execute_rol,
-            Opcode::Ror => Self::execute_ror,
-            Opcode::Rti => Self::execute_rti,
-            Opcode::Rts => Self::execute_rts,
-            Opcode::Sbc => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Sec => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Sed => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Sei => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Sta => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Stx => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Sty => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Tax => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Tay => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Tsx => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Txa => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Txs => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Tya => todo!("{:?} not yet implemented", instruction.opcode),
+        let m = instruction.addressing_mode;
+        match instruction.opcode {
+            Opcode::Adc => self.execute_adc(m),
+            Opcode::And => self.execute_and(m),
+            Opcode::Asl => self.execute_asl(m),
+            Opcode::Bcc => self.execute_bcc(m),
+            Opcode::Bcs => self.execute_bcs(m),
+            Opcode::Beq => self.execute_beq(m),
+            Opcode::Bit => self.execute_bit(m),
+            Opcode::Bmi => self.execute_bmi(m),
+            Opcode::Bne => self.execute_bne(m),
+            Opcode::Bpl => self.execute_bpl(m),
+            Opcode::Brk => self.execute_brk(m),
+            Opcode::Bvc => self.execute_bvc(m),
+            Opcode::Bvs => self.execute_bvs(m),
+            Opcode::Clc => self.execute_clc(m),
+            Opcode::Cld => self.execute_cld(m),
+            Opcode::Cli => self.execute_cli(m),
+            Opcode::Clv => self.execute_clv(m),
+            Opcode::Cmp => self.execute_cmp(m),
+            Opcode::Cpx => self.execute_cpx(m),
+            Opcode::Cpy => self.execute_cpy(m),
+            Opcode::Dec => self.execute_dec(m),
+            Opcode::Dex => self.execute_dex(m),
+            Opcode::Dey => self.execute_dey(m),
+            Opcode::Eor => self.execute_eor(m),
+            Opcode::Inc => self.execute_inc(m),
+            Opcode::Inx => self.execute_inx(m),
+            Opcode::Iny => self.execute_iny(m),
+            Opcode::Jmp => self.execute_jmp(m),
+            Opcode::Jsr => self.execute_jsr(m),
+            Opcode::Lda => self.execute_lda(m),
+            Opcode::Ldx => self.execute_ldx(m),
+            Opcode::Ldy => self.execute_ldy(m),
+            Opcode::Lsr => self.execute_lsr(m),
+            Opcode::Nop => {}
+            Opcode::Ora => self.execute_ora(m),
+            Opcode::Pha => self.execute_pha(m),
+            Opcode::Php => self.execute_php(m),
+            Opcode::Pla => self.execute_pla(m),
+            Opcode::Plp => self.execute_plp(m),
+            Opcode::Rol => self.execute_rol(m),
+            Opcode::Ror => self.execute_ror(m),
+            Opcode::Rti => self.execute_rti(m),
+            Opcode::Rts => self.execute_rts(m),
+            Opcode::Sbc => self.execute_sbc(m),
+            Opcode::Sec => self.execute_sec(m),
+            Opcode::Sed => self.execute_sed(m),
+            Opcode::Sei => self.execute_sei(m),
+            Opcode::Sta => self.execute_sta(m),
+            Opcode::Stx => self.execute_stx(m),
+            Opcode::Sty => self.execute_sty(m),
+            Opcode::Tax => self.execute_tax(m),
+            Opcode::Tay => self.execute_tay(m),
+            Opcode::Tsx => self.execute_tsx(m),
+            Opcode::Txa => self.execute_txa(m),
+            Opcode::Txs => self.execute_txs(m),
+            Opcode::Tya => self.execute_tya(m),
         };
-        handler(self, instruction.addressing_mode);
 
         #[cfg(debug_assertions)]
         {
@@ -160,6 +160,114 @@ impl Cpu {
                 self.status.bits(),
             );
         }
+    }
+
+    fn execute_adc(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_and(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_asl(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bcc(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bcs(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_beq(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bit(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bmi(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bne(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bpl(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_brk(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bvc(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_bvs(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_clc(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_cld(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_cli(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_clv(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_cmp(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_cpx(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_cpy(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_dec(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_dex(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_dey(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_eor(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_inc(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_inx(&self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_iny(&self, addressing_mode: AddressingMode) {
+        todo!()
     }
 
     fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
@@ -227,10 +335,6 @@ impl Cpu {
         let value = self.memory.read(address);
         let new_value = lsr(self, value);
         self.memory.write(address, new_value);
-    }
-
-    fn execute_nop(&mut self, _: AddressingMode) {
-        // do nothing
     }
 
     fn execute_ora(&mut self, addressing_mode: AddressingMode) {
@@ -326,6 +430,58 @@ impl Cpu {
         let high_byte = self.pop();
         self.pc = (high_byte as Word) << 8 | (low_byte as Word);
         self.pc += 1;
+    }
+
+    fn execute_sbc(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_sec(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_sed(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_sei(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_sta(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_stx(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_sty(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_tax(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_tay(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_tsx(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_txa(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_txs(&mut self, addressing_mode: AddressingMode) {
+        todo!()
+    }
+
+    fn execute_tya(&mut self, addressing_mode: AddressingMode) {
+        todo!()
     }
 
     fn push(&mut self, byte: Byte) {
