@@ -1,12 +1,9 @@
 use std::fmt::{Debug, Formatter};
 
-use derive_more::{Deref, DerefMut};
-
 use crate::cpu::{Byte, Word};
 
 pub const MAX_MEMORY: Word = Word::MAX;
 
-#[derive(Deref, DerefMut)]
 pub struct Memory {
     data: [u8; MAX_MEMORY as usize],
 }
