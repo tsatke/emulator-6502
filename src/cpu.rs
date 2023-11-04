@@ -556,7 +556,7 @@ impl Cpu {
     fn branch_if(&mut self, f: fn(&mut Cpu) -> bool) {
         let value = self.fetch_and_advance_pc();
         if f(self) {
-            self.pc = self.pc.wrapping_add(value as Word);
+            self.pc = self.pc.wrapping_add_signed(value as i8 as i16);
         }
     }
 
