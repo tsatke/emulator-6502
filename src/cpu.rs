@@ -76,6 +76,9 @@ impl Cpu {
     }
 
     fn execute_next_instruction(&mut self) {
+        #[cfg(debug_assertions)]
+        let original_pc = self.pc;
+
         let opcode = self.fetch_and_advance_pc();
         let instruction = Instruction::try_from(opcode);
         let instruction = match instruction {
@@ -150,7 +153,7 @@ impl Cpu {
         {
             println!(
                 "{:04X} {:02X} {:?} |{:02X} {:02X} {:02X} {:02X}|{:08b}|",
-                self.pc - 1,
+                original_pc,
                 opcode,
                 instruction.opcode,
                 self.a,
