@@ -80,7 +80,7 @@ impl Cpu {
             }
         };
 
-        match instruction.opcode {
+        let handler = match instruction.opcode {
             Opcode::Adc => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::And => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Asl => todo!("{:?} not yet implemented", instruction.opcode),
@@ -110,15 +110,15 @@ impl Cpu {
             Opcode::Iny => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Jmp => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Jsr => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Lda => self.execute_lda(instruction.addressing_mode),
-            Opcode::Ldx => self.execute_ldx(instruction.addressing_mode),
-            Opcode::Ldy => self.execute_ldy(instruction.addressing_mode),
-            Opcode::Lsr => self.execute_lsr(instruction.addressing_mode),
-            Opcode::Nop => {} // nothing to do here
-            Opcode::Ora => self.execute_ora(instruction.addressing_mode),
-            Opcode::Pha => self.execute_pha(instruction.addressing_mode),
-            Opcode::Php => self.execute_php(instruction.addressing_mode),
-            Opcode::Pla => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Lda => Self::execute_lda,
+            Opcode::Ldx => Self::execute_ldx,
+            Opcode::Ldy => Self::execute_ldy,
+            Opcode::Lsr => Self::execute_lsr,
+            Opcode::Nop => Self::execute_nop,
+            Opcode::Ora => Self::execute_ora,
+            Opcode::Pha => Self::execute_pha,
+            Opcode::Php => Self::execute_php,
+            Opcode::Pla => Self::execute_pla,
             Opcode::Plp => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rol => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Ror => todo!("{:?} not yet implemented", instruction.opcode),
@@ -137,7 +137,8 @@ impl Cpu {
             Opcode::Txa => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Txs => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Tya => todo!("{:?} not yet implemented", instruction.opcode),
-        }
+        };
+        handler(self, instruction.addressing_mode);
     }
 
     fn execute_lda(&mut self, addressing_mode: AddressingMode) {
@@ -180,6 +181,10 @@ impl Cpu {
         self.memory.write(address, new_value);
     }
 
+    fn execute_nop(&mut self, _: AddressingMode) {
+        // do nothing
+    }
+
     fn execute_ora(&mut self, addressing_mode: AddressingMode) {
         let value = self.resolve_argument_value(addressing_mode);
         self.a |= value;
@@ -194,6 +199,12 @@ impl Cpu {
     fn execute_php(&mut self, addressing_mode: AddressingMode) {
         assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.push(self.status.bits());
+    }
+
+    fn execute_pla(&mut self, addressing_mode: AddressingMode) {
+        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        self.a = self.pop();
+        self.set_zero_and_negative_flags(self.a);
     }
 
     fn push(&mut self, byte: Byte) {
