@@ -163,7 +163,15 @@ impl Cpu {
     }
 
     fn execute_adc(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let value = self.resolve_argument_value(addressing_mode);
+        let (new_value, carry) = self.a.overflowing_add(value);
+        self.status.set(ProcessorStatus::Carry, carry);
+        self.status.set(
+            ProcessorStatus::Overflow,
+            (self.a ^ new_value) & (value ^ new_value) & 0x80 > 0,
+        );
+        self.a = new_value;
+        self.set_zero_and_negative_flags(self.a);
     }
 
     fn execute_and(&mut self, addressing_mode: AddressingMode) {
