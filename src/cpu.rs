@@ -311,7 +311,9 @@ impl Cpu {
     }
 
     fn execute_eor(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let value = self.resolve_argument_value(addressing_mode);
+        self.a ^= value;
+        self.set_zero_and_negative_flags(self.a);
     }
 
     fn execute_inc(&mut self, addressing_mode: AddressingMode) {
