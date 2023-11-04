@@ -23,6 +23,8 @@ impl TryFrom<Byte> for Instruction {
             0x6D => Self::new(Opcode::Adc, AddressingMode::Absolute),
             0x7D => Self::new(Opcode::Adc, AddressingMode::AbsoluteX),
             0x79 => Self::new(Opcode::Adc, AddressingMode::AbsoluteY),
+            0x61 => Self::new(Opcode::Adc, AddressingMode::IndexedIndirect),
+            0x71 => Self::new(Opcode::Adc, AddressingMode::IndirectIndexed),
             // AND
             0x29 => Self::new(Opcode::And, AddressingMode::Immediate),
             0x25 => Self::new(Opcode::And, AddressingMode::ZeroPage),
@@ -30,6 +32,8 @@ impl TryFrom<Byte> for Instruction {
             0x2D => Self::new(Opcode::And, AddressingMode::Absolute),
             0x3D => Self::new(Opcode::And, AddressingMode::AbsoluteX),
             0x39 => Self::new(Opcode::And, AddressingMode::AbsoluteY),
+            0x21 => Self::new(Opcode::And, AddressingMode::IndexedIndirect),
+            0x31 => Self::new(Opcode::And, AddressingMode::IndirectIndexed),
             // ASL
             0x0A => Self::new(Opcode::Asl, AddressingMode::Accumulator),
             0x06 => Self::new(Opcode::Asl, AddressingMode::ZeroPage),
@@ -72,6 +76,8 @@ impl TryFrom<Byte> for Instruction {
             0xCD => Self::new(Opcode::Cmp, AddressingMode::Absolute),
             0xDD => Self::new(Opcode::Cmp, AddressingMode::AbsoluteX),
             0xD9 => Self::new(Opcode::Cmp, AddressingMode::AbsoluteY),
+            0xC1 => Self::new(Opcode::Cmp, AddressingMode::IndexedIndirect),
+            0xD1 => Self::new(Opcode::Cmp, AddressingMode::IndirectIndexed),
             // CPX
             0xE0 => Self::new(Opcode::Cpx, AddressingMode::Immediate),
             0xE4 => Self::new(Opcode::Cpx, AddressingMode::ZeroPage),
@@ -96,6 +102,8 @@ impl TryFrom<Byte> for Instruction {
             0x4D => Self::new(Opcode::Eor, AddressingMode::Absolute),
             0x5D => Self::new(Opcode::Eor, AddressingMode::AbsoluteX),
             0x59 => Self::new(Opcode::Eor, AddressingMode::AbsoluteY),
+            0x41 => Self::new(Opcode::Eor, AddressingMode::IndexedIndirect),
+            0x51 => Self::new(Opcode::Eor, AddressingMode::IndirectIndexed),
             // INC
             0xE6 => Self::new(Opcode::Inc, AddressingMode::ZeroPage),
             0xF6 => Self::new(Opcode::Inc, AddressingMode::ZeroPageX),
@@ -117,6 +125,8 @@ impl TryFrom<Byte> for Instruction {
             0xAD => Self::new(Opcode::Lda, AddressingMode::Absolute),
             0xBD => Self::new(Opcode::Lda, AddressingMode::AbsoluteX),
             0xB9 => Self::new(Opcode::Lda, AddressingMode::AbsoluteY),
+            0xA1 => Self::new(Opcode::Lda, AddressingMode::IndexedIndirect),
+            0xB1 => Self::new(Opcode::Lda, AddressingMode::IndirectIndexed),
             // LDX
             0xA2 => Self::new(Opcode::Ldx, AddressingMode::Immediate),
             0xA6 => Self::new(Opcode::Ldx, AddressingMode::ZeroPage),
@@ -144,6 +154,8 @@ impl TryFrom<Byte> for Instruction {
             0x0D => Self::new(Opcode::Ora, AddressingMode::Absolute),
             0x1D => Self::new(Opcode::Ora, AddressingMode::AbsoluteX),
             0x19 => Self::new(Opcode::Ora, AddressingMode::AbsoluteY),
+            0x01 => Self::new(Opcode::Ora, AddressingMode::IndexedIndirect),
+            0x11 => Self::new(Opcode::Ora, AddressingMode::IndirectIndexed),
             // PHA
             0x48 => Self::new(Opcode::Pha, AddressingMode::Implicit),
             // PHP
@@ -175,6 +187,8 @@ impl TryFrom<Byte> for Instruction {
             0xED => Self::new(Opcode::Sbc, AddressingMode::Absolute),
             0xFD => Self::new(Opcode::Sbc, AddressingMode::AbsoluteX),
             0xF9 => Self::new(Opcode::Sbc, AddressingMode::AbsoluteY),
+            0xE1 => Self::new(Opcode::Sbc, AddressingMode::IndexedIndirect),
+            0xF1 => Self::new(Opcode::Sbc, AddressingMode::IndirectIndexed),
             // SEC
             0x38 => Self::new(Opcode::Sec, AddressingMode::Implicit),
             // SED
@@ -187,6 +201,8 @@ impl TryFrom<Byte> for Instruction {
             0x8D => Self::new(Opcode::Sta, AddressingMode::Absolute),
             0x9D => Self::new(Opcode::Sta, AddressingMode::AbsoluteX),
             0x99 => Self::new(Opcode::Sta, AddressingMode::AbsoluteY),
+            0x81 => Self::new(Opcode::Sta, AddressingMode::IndexedIndirect),
+            0x91 => Self::new(Opcode::Sta, AddressingMode::IndirectIndexed),
             // STX
             0x86 => Self::new(Opcode::Stx, AddressingMode::ZeroPage),
             0x96 => Self::new(Opcode::Stx, AddressingMode::ZeroPageY),
