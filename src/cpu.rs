@@ -109,7 +109,7 @@ impl Cpu {
             Opcode::Inx => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Iny => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Jmp => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Jsr => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Jsr => Self::execute_jsr,
             Opcode::Lda => Self::execute_lda,
             Opcode::Ldx => Self::execute_ldx,
             Opcode::Ldy => Self::execute_ldy,
@@ -122,8 +122,8 @@ impl Cpu {
             Opcode::Plp => Self::execute_plp,
             Opcode::Rol => Self::execute_rol,
             Opcode::Ror => Self::execute_ror,
-            Opcode::Rti => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Rts => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Rti => Self::execute_rti,
+            Opcode::Rts => Self::execute_rts,
             Opcode::Sbc => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Sec => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Sed => todo!("{:?} not yet implemented", instruction.opcode),
@@ -139,6 +139,18 @@ impl Cpu {
             Opcode::Tya => todo!("{:?} not yet implemented", instruction.opcode),
         };
         handler(self, instruction.addressing_mode);
+    }
+
+    fn execute_jsr(&mut self, addressing_mode: AddressingMode) {
+        debug_assert_eq!(addressing_mode, AddressingMode::Absolute);
+
+        let low_byte = self.fetch_and_advance_pc();
+        let high_byte = self.fetch_and_advance_pc();
+        let address = (high_byte as Word) << 8 | (low_byte as Word);
+        let return_address = self.pc - 1;
+        self.push((return_address >> 8) as Byte);
+        self.push((return_address & 0xFF) as Byte);
+        self.pc = address;
     }
 
     fn execute_lda(&mut self, addressing_mode: AddressingMode) {
@@ -193,23 +205,23 @@ impl Cpu {
     }
 
     fn execute_pha(&mut self, addressing_mode: AddressingMode) {
-        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.push(self.a);
     }
 
     fn execute_php(&mut self, addressing_mode: AddressingMode) {
-        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.push(self.status.bits());
     }
 
     fn execute_pla(&mut self, addressing_mode: AddressingMode) {
-        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.a = self.pop();
         self.set_zero_and_negative_flags(self.a);
     }
 
     fn execute_plp(&mut self, addressing_mode: AddressingMode) {
-        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.status = ProcessorStatus::from_bits_truncate(self.pop());
     }
 
@@ -261,6 +273,24 @@ impl Cpu {
         let value = self.memory.read(address);
         let new_value = ror(self, value);
         self.memory.write(address, new_value);
+    }
+
+    fn execute_rti(&mut self, addressing_mode: AddressingMode) {
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
+
+        self.status = ProcessorStatus::from_bits_truncate(self.pop());
+        let low_byte = self.pop();
+        let high_byte = self.pop();
+        self.pc = (high_byte as Word) << 8 | (low_byte as Word);
+    }
+
+    fn execute_rts(&mut self, addressing_mode: AddressingMode) {
+        debug_assert_eq!(addressing_mode, AddressingMode::Implicit);
+
+        let low_byte = self.pop();
+        let high_byte = self.pop();
+        self.pc = (high_byte as Word) << 8 | (low_byte as Word);
+        self.pc += 1;
     }
 
     fn push(&mut self, byte: Byte) {
