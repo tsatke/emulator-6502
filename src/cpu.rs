@@ -7,7 +7,7 @@ pub type Byte = u8;
 pub type Word = u16;
 pub type DoubleWord = u32;
 
-pub const CODE_START: Word = 0xA000;
+pub const CODE_START: Word = 0xC000;
 pub const STACK_START: Word = 0x0100;
 pub const STACK_END: Word = 0x01FF;
 pub const RESET_VECTOR: Word = 0xFFFC;
