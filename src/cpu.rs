@@ -211,7 +211,12 @@ impl Cpu {
     }
 
     fn execute_bit(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let value = self.resolve_argument_value(addressing_mode);
+        self.status.set(ProcessorStatus::Zero, self.a & value == 0);
+        self.status
+            .set(ProcessorStatus::Overflow, value & 0b0100_0000 > 0);
+        self.status
+            .set(ProcessorStatus::Negative, value & 0b1000_0000 > 0);
     }
 
     fn execute_bmi(&mut self, addressing_mode: AddressingMode) {
