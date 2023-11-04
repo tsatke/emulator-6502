@@ -220,7 +220,9 @@ impl Cpu {
     }
 
     fn execute_bmi(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| cpu.status.contains(ProcessorStatus::Negative));
     }
 
     fn execute_bne(&mut self, addressing_mode: AddressingMode) {
@@ -499,7 +501,7 @@ impl Cpu {
     fn branch_if(&mut self, f: fn(&mut Cpu) -> bool) {
         let value = self.fetch_and_advance_pc();
         if f(self) {
-            self.pc += value as Word;
+            self.pc = self.pc.wrapping_add(value as Word);
         }
     }
 
