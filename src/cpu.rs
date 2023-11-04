@@ -58,6 +58,12 @@ impl Cpu {
     }
 
     pub fn run(&mut self, instruction_limit: Option<usize>) {
+        #[cfg(debug_assertions)]
+        {
+            println!("addr op ins |AC XR YR SP|nv_bdizc|");
+            println!("------------|-----------|--------|");
+        }
+
         if let Some(limit) = instruction_limit {
             for _ in 0..limit {
                 self.execute_next_instruction();
@@ -139,6 +145,21 @@ impl Cpu {
             Opcode::Tya => todo!("{:?} not yet implemented", instruction.opcode),
         };
         handler(self, instruction.addressing_mode);
+
+        #[cfg(debug_assertions)]
+        {
+            println!(
+                "{:04X} {:02X} {:?} |{:02X} {:02X} {:02X} {:02X}|{:08b}|",
+                self.pc - 1,
+                opcode,
+                instruction.opcode,
+                self.a,
+                self.x,
+                self.y,
+                self.sp,
+                self.status.bits(),
+            );
+        }
     }
 
     fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
