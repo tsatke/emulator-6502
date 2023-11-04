@@ -120,7 +120,7 @@ impl Cpu {
             Opcode::Php => Self::execute_php,
             Opcode::Pla => Self::execute_pla,
             Opcode::Plp => Self::execute_plp,
-            Opcode::Rol => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Rol => Self::execute_rol,
             Opcode::Ror => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rti => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rts => todo!("{:?} not yet implemented", instruction.opcode),
@@ -162,22 +162,23 @@ impl Cpu {
     fn execute_lsr(&mut self, addressing_mode: AddressingMode) {
         assert_ne!(addressing_mode, AddressingMode::Immediate);
 
-        if addressing_mode == AddressingMode::Accumulator {
-            let value = self.a;
-            self.status
+        let lsr = |cpu: &mut Cpu, value: Byte| -> Byte {
+            cpu.status
                 .set(ProcessorStatus::Carry, value & 0b0000_0001 > 0);
             let new_value = value >> 1;
-            self.set_zero_and_negative_flags(new_value);
-            self.a = new_value;
+            cpu.set_zero_and_negative_flags(new_value);
+            new_value
+        };
+
+        if addressing_mode == AddressingMode::Accumulator {
+            let value = self.a;
+            self.a = lsr(self, value);
             return;
         }
 
         let address = self.resolve_argument_address(addressing_mode);
         let value = self.memory.read(address);
-        self.status
-            .set(ProcessorStatus::Carry, value & 0b0000_0001 > 0);
-        let new_value = value >> 1;
-        self.set_zero_and_negative_flags(new_value);
+        let new_value = lsr(self, value);
         self.memory.write(address, new_value);
     }
 
@@ -210,6 +211,31 @@ impl Cpu {
     fn execute_plp(&mut self, addressing_mode: AddressingMode) {
         assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.status = ProcessorStatus::from_bits_truncate(self.pop());
+    }
+
+    fn execute_rol(&mut self, addressing_mode: AddressingMode) {
+        let rol = |cpu: &mut Cpu, value: Byte| -> Byte {
+            let mut new_value = value << 1;
+            if cpu.status.contains(ProcessorStatus::Carry) {
+                new_value |= 1;
+            }
+            cpu.set_zero_and_negative_flags(new_value);
+            cpu.a = new_value;
+            cpu.status
+                .set(ProcessorStatus::Carry, value & 0b1000_0000 > 0);
+            new_value
+        };
+
+        if addressing_mode == AddressingMode::Accumulator {
+            let value = self.a;
+            self.a = rol(self, value);
+            return;
+        }
+
+        let address = self.resolve_argument_address(addressing_mode);
+        let value = self.memory.read(address);
+        let new_value = rol(self, value);
+        self.memory.write(address, new_value);
     }
 
     fn push(&mut self, byte: Byte) {
