@@ -229,11 +229,15 @@ impl Cpu {
     }
 
     fn execute_bne(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| !cpu.status.contains(ProcessorStatus::Zero));
     }
 
     fn execute_bpl(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| !cpu.status.contains(ProcessorStatus::Negative));
     }
 
     fn execute_brk(&mut self, addressing_mode: AddressingMode) {
