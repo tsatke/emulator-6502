@@ -257,19 +257,19 @@ impl Cpu {
     }
 
     fn execute_clc(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.status.remove(ProcessorStatus::Carry);
     }
 
     fn execute_cld(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.status.remove(ProcessorStatus::DecimalMode);
     }
 
     fn execute_cli(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.status.remove(ProcessorStatus::InterruptDisable);
     }
 
     fn execute_clv(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.status.remove(ProcessorStatus::Overflow);
     }
 
     fn execute_cmp(&mut self, addressing_mode: AddressingMode) {
