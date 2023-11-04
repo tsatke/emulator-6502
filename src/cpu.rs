@@ -293,15 +293,21 @@ impl Cpu {
     }
 
     fn execute_dec(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let address = self.resolve_argument_address(addressing_mode);
+        let value = self.memory.read(address);
+        let new_value = value.wrapping_sub(1);
+        self.memory.write(address, new_value);
+        self.set_zero_and_negative_flags(new_value);
     }
 
     fn execute_dex(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.x = self.x.wrapping_sub(1);
+        self.set_zero_and_negative_flags(self.x);
     }
 
     fn execute_dey(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.y = self.y.wrapping_sub(1);
+        self.set_zero_and_negative_flags(self.y);
     }
 
     fn execute_eor(&mut self, addressing_mode: AddressingMode) {
@@ -309,15 +315,21 @@ impl Cpu {
     }
 
     fn execute_inc(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let address = self.resolve_argument_address(addressing_mode);
+        let value = self.memory.read(address);
+        let new_value = value.wrapping_add(1);
+        self.memory.write(address, new_value);
+        self.set_zero_and_negative_flags(new_value);
     }
 
     fn execute_inx(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.x = self.x.wrapping_add(1);
+        self.set_zero_and_negative_flags(self.x);
     }
 
     fn execute_iny(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.y = self.y.wrapping_add(1);
+        self.set_zero_and_negative_flags(self.y);
     }
 
     fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
