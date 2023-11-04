@@ -484,7 +484,8 @@ impl Cpu {
     }
 
     fn execute_sta(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let address = self.resolve_argument_address(addressing_mode);
+        self.memory.write(address, self.a);
     }
 
     fn execute_stx(&mut self, addressing_mode: AddressingMode) {
