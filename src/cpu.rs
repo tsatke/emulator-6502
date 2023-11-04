@@ -300,12 +300,9 @@ impl Cpu {
     }
 
     fn set_zero_and_negative_flags(&mut self, value: Byte) {
-        if value == 0 {
-            self.set_flag(ProcessorStatus::Zero);
-        }
-        if value & 0b1000_0000 != 0 {
-            self.set_flag(ProcessorStatus::Negative);
-        }
+        self.status.set(ProcessorStatus::Zero, value == 0);
+        self.status
+            .set(ProcessorStatus::Negative, value & 0b1000_0000 > 0);
     }
 
     fn fetch_and_advance_pc(&mut self) -> Byte {
@@ -326,13 +323,5 @@ impl Cpu {
                 self.y,
                 self.status,
         );
-    }
-
-    pub fn set_flag(&mut self, flag: ProcessorStatus) {
-        self.status.insert(flag);
-    }
-
-    pub fn clear_flag(&mut self, flag: ProcessorStatus) {
-        self.status.remove(flag);
     }
 }
