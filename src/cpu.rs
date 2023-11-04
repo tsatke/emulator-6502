@@ -271,16 +271,14 @@ impl Cpu {
     }
 
     fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
-        if addressing_mode != AddressingMode::Absolute {
-            todo!(
-                "{:?} addressing mode not yet implemented for JMP",
-                addressing_mode
-            );
-        }
-
         let low_byte = self.fetch_and_advance_pc();
         let high_byte = self.fetch_and_advance_pc();
-        let address = (high_byte as Word) << 8 | (low_byte as Word);
+        let mut address = (high_byte as Word) << 8 | (low_byte as Word);
+        if addressing_mode == AddressingMode::Indirect {
+            let low_byte = self.memory.read(address);
+            let high_byte = self.memory.read(address + 1);
+            address = (high_byte as Word) << 8 | (low_byte as Word);
+        }
         self.pc = address;
     }
 
