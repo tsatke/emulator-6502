@@ -162,111 +162,111 @@ impl Cpu {
         }
     }
 
-    fn execute_adc(&self, addressing_mode: AddressingMode) {
+    fn execute_adc(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_and(&self, addressing_mode: AddressingMode) {
+    fn execute_and(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_asl(&self, addressing_mode: AddressingMode) {
+    fn execute_asl(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bcc(&self, addressing_mode: AddressingMode) {
+    fn execute_bcc(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bcs(&self, addressing_mode: AddressingMode) {
+    fn execute_bcs(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_beq(&self, addressing_mode: AddressingMode) {
+    fn execute_beq(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bit(&self, addressing_mode: AddressingMode) {
+    fn execute_bit(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bmi(&self, addressing_mode: AddressingMode) {
+    fn execute_bmi(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bne(&self, addressing_mode: AddressingMode) {
+    fn execute_bne(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bpl(&self, addressing_mode: AddressingMode) {
+    fn execute_bpl(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_brk(&self, addressing_mode: AddressingMode) {
+    fn execute_brk(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bvc(&self, addressing_mode: AddressingMode) {
+    fn execute_bvc(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_bvs(&self, addressing_mode: AddressingMode) {
+    fn execute_bvs(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_clc(&self, addressing_mode: AddressingMode) {
+    fn execute_clc(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_cld(&self, addressing_mode: AddressingMode) {
+    fn execute_cld(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_cli(&self, addressing_mode: AddressingMode) {
+    fn execute_cli(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_clv(&self, addressing_mode: AddressingMode) {
+    fn execute_clv(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_cmp(&self, addressing_mode: AddressingMode) {
+    fn execute_cmp(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_cpx(&self, addressing_mode: AddressingMode) {
+    fn execute_cpx(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_cpy(&self, addressing_mode: AddressingMode) {
+    fn execute_cpy(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_dec(&self, addressing_mode: AddressingMode) {
+    fn execute_dec(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_dex(&self, addressing_mode: AddressingMode) {
+    fn execute_dex(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_dey(&self, addressing_mode: AddressingMode) {
+    fn execute_dey(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_eor(&self, addressing_mode: AddressingMode) {
+    fn execute_eor(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_inc(&self, addressing_mode: AddressingMode) {
+    fn execute_inc(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_inx(&self, addressing_mode: AddressingMode) {
+    fn execute_inx(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
-    fn execute_iny(&self, addressing_mode: AddressingMode) {
+    fn execute_iny(&mut self, addressing_mode: AddressingMode) {
         todo!()
     }
 
