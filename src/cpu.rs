@@ -108,7 +108,7 @@ impl Cpu {
             Opcode::Inc => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Inx => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Iny => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Jmp => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Jmp => Self::execute_jmp,
             Opcode::Jsr => Self::execute_jsr,
             Opcode::Lda => Self::execute_lda,
             Opcode::Ldx => Self::execute_ldx,
@@ -139,6 +139,20 @@ impl Cpu {
             Opcode::Tya => todo!("{:?} not yet implemented", instruction.opcode),
         };
         handler(self, instruction.addressing_mode);
+    }
+
+    fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
+        if addressing_mode != AddressingMode::Absolute {
+            todo!(
+                "{:?} addressing mode not yet implemented for JMP",
+                addressing_mode
+            );
+        }
+
+        let low_byte = self.fetch_and_advance_pc();
+        let high_byte = self.fetch_and_advance_pc();
+        let address = (high_byte as Word) << 8 | (low_byte as Word);
+        self.pc = address;
     }
 
     fn execute_jsr(&mut self, addressing_mode: AddressingMode) {
