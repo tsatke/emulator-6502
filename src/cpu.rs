@@ -499,11 +499,13 @@ impl Cpu {
     }
 
     fn execute_tax(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.x = self.a;
+        self.set_zero_and_negative_flags(self.x);
     }
 
     fn execute_tay(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.y = self.a;
+        self.set_zero_and_negative_flags(self.y);
     }
 
     fn execute_tsx(&mut self, addressing_mode: AddressingMode) {
