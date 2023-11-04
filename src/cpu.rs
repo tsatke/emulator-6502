@@ -8,6 +8,8 @@ pub type Word = u16;
 pub type DoubleWord = u32;
 
 pub const CODE_START: Word = 0xA000;
+pub const STACK_START: Word = 0x0100;
+pub const STACK_END: Word = 0x01FF;
 pub const RESET_VECTOR: Word = 0xFFFC;
 
 bitflags! {
@@ -34,7 +36,7 @@ pub struct Cpu {
     pub memory: Memory,
 
     pub pc: Word,
-    pub sp: Word,
+    pub sp: Byte,
     pub a: Byte,
     pub x: Byte,
     pub y: Byte,
@@ -47,7 +49,7 @@ impl Cpu {
             memory,
 
             pc: CODE_START,
-            sp: 0x0100,
+            sp: 0xFF,
             a: 0,
             x: 0,
             y: 0,
@@ -114,8 +116,8 @@ impl Cpu {
             Opcode::Lsr => self.execute_lsr(instruction.addressing_mode),
             Opcode::Nop => {} // nothing to do here
             Opcode::Ora => self.execute_ora(instruction.addressing_mode),
-            Opcode::Pha => todo!("{:?} not yet implemented", instruction.opcode),
-            Opcode::Php => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Pha => self.execute_pha(instruction.addressing_mode),
+            Opcode::Php => self.execute_php(instruction.addressing_mode),
             Opcode::Pla => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Plp => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rol => todo!("{:?} not yet implemented", instruction.opcode),
@@ -182,6 +184,28 @@ impl Cpu {
         let value = self.resolve_argument_value(addressing_mode);
         self.a |= value;
         self.set_zero_and_negative_flags(self.a);
+    }
+
+    fn execute_pha(&mut self, addressing_mode: AddressingMode) {
+        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        self.push(self.a);
+    }
+
+    fn execute_php(&mut self, addressing_mode: AddressingMode) {
+        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        self.push(self.status.bits());
+    }
+
+    fn push(&mut self, byte: Byte) {
+        let address = STACK_START + self.sp as Word;
+        self.memory.write(address, byte);
+        self.sp = self.sp.checked_sub(1).expect("stack overflow");
+    }
+
+    fn pop(&mut self) -> Byte {
+        self.sp = self.sp.checked_add(1).expect("stack underflow");
+        let address = STACK_START + self.sp as Word;
+        self.memory.read(address)
     }
 
     fn resolve_argument_address(&mut self, addressing_mode: AddressingMode) -> Word {
