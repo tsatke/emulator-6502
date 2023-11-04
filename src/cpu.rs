@@ -256,19 +256,19 @@ impl Cpu {
         self.branch_if(|cpu| cpu.status.contains(ProcessorStatus::Overflow));
     }
 
-    fn execute_clc(&mut self, addressing_mode: AddressingMode) {
+    fn execute_clc(&mut self, _: AddressingMode) {
         self.status.remove(ProcessorStatus::Carry);
     }
 
-    fn execute_cld(&mut self, addressing_mode: AddressingMode) {
+    fn execute_cld(&mut self, _: AddressingMode) {
         self.status.remove(ProcessorStatus::DecimalMode);
     }
 
-    fn execute_cli(&mut self, addressing_mode: AddressingMode) {
+    fn execute_cli(&mut self, _: AddressingMode) {
         self.status.remove(ProcessorStatus::InterruptDisable);
     }
 
-    fn execute_clv(&mut self, addressing_mode: AddressingMode) {
+    fn execute_clv(&mut self, _: AddressingMode) {
         self.status.remove(ProcessorStatus::Overflow);
     }
 
@@ -300,12 +300,12 @@ impl Cpu {
         self.set_zero_and_negative_flags(new_value);
     }
 
-    fn execute_dex(&mut self, addressing_mode: AddressingMode) {
+    fn execute_dex(&mut self, _: AddressingMode) {
         self.x = self.x.wrapping_sub(1);
         self.set_zero_and_negative_flags(self.x);
     }
 
-    fn execute_dey(&mut self, addressing_mode: AddressingMode) {
+    fn execute_dey(&mut self, _: AddressingMode) {
         self.y = self.y.wrapping_sub(1);
         self.set_zero_and_negative_flags(self.y);
     }
@@ -324,12 +324,12 @@ impl Cpu {
         self.set_zero_and_negative_flags(new_value);
     }
 
-    fn execute_inx(&mut self, addressing_mode: AddressingMode) {
+    fn execute_inx(&mut self, _: AddressingMode) {
         self.x = self.x.wrapping_add(1);
         self.set_zero_and_negative_flags(self.x);
     }
 
-    fn execute_iny(&mut self, addressing_mode: AddressingMode) {
+    fn execute_iny(&mut self, _: AddressingMode) {
         self.y = self.y.wrapping_add(1);
         self.set_zero_and_negative_flags(self.y);
     }
