@@ -498,30 +498,33 @@ impl Cpu {
         self.memory.write(address, self.y);
     }
 
-    fn execute_tax(&mut self, addressing_mode: AddressingMode) {
+    fn execute_tax(&mut self, _: AddressingMode) {
         self.x = self.a;
         self.set_zero_and_negative_flags(self.x);
     }
 
-    fn execute_tay(&mut self, addressing_mode: AddressingMode) {
+    fn execute_tay(&mut self, _: AddressingMode) {
         self.y = self.a;
         self.set_zero_and_negative_flags(self.y);
     }
 
-    fn execute_tsx(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_tsx(&mut self, _: AddressingMode) {
+        self.x = self.sp;
+        self.set_zero_and_negative_flags(self.x);
     }
 
-    fn execute_txa(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_txa(&mut self, _: AddressingMode) {
+        self.a = self.x;
+        self.set_zero_and_negative_flags(self.a);
     }
 
-    fn execute_txs(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_txs(&mut self, _: AddressingMode) {
+        self.sp = self.x;
     }
 
-    fn execute_tya(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_tya(&mut self, _: AddressingMode) {
+        self.a = self.y;
+        self.set_zero_and_negative_flags(self.a);
     }
 
     fn push(&mut self, byte: Byte) {
