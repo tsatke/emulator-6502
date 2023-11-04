@@ -58,7 +58,7 @@ impl Cpu {
     }
 
     pub fn run(&mut self, instruction_limit: Option<usize>) {
-        #[cfg(debug_assertions)]
+        #[cfg(feature = "trace")]
         {
             println!("addr op ins |AC XR YR SP|nv_bdizc|");
             println!("------------|-----------|--------|");
@@ -149,7 +149,7 @@ impl Cpu {
             Opcode::Tya => self.execute_tya(m),
         };
 
-        #[cfg(debug_assertions)]
+        #[cfg(feature = "trace")]
         {
             println!(
                 "{:04X} {:02X} {:?} |{:02X} {:02X} {:02X} {:02X}|{:08b}|",

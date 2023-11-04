@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 bitflags = { version = "2.4.1", features = [] }
 derive_more = "0.99.17"
+
+[features]
+trace = []
