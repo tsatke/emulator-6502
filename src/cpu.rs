@@ -489,11 +489,13 @@ impl Cpu {
     }
 
     fn execute_stx(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let address = self.resolve_argument_address(addressing_mode);
+        self.memory.write(address, self.x);
     }
 
     fn execute_sty(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let address = self.resolve_argument_address(addressing_mode);
+        self.memory.write(address, self.y);
     }
 
     fn execute_tax(&mut self, addressing_mode: AddressingMode) {
