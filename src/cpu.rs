@@ -527,6 +527,20 @@ impl Cpu {
                 let high_byte = self.memory.read(address + 1);
                 (high_byte as Word) << 8 | (low_byte as Word)
             }
+            AddressingMode::IndexedIndirect => {
+                let address = self.fetch_and_advance_pc();
+                let address = address.wrapping_add(self.x) as Word;
+                let low_byte = self.memory.read(address);
+                let high_byte = self.memory.read(address + 1);
+                (high_byte as Word) << 8 | (low_byte as Word)
+            }
+            AddressingMode::IndirectIndexed => {
+                let address = self.fetch_and_advance_pc() as Word;
+                let low_byte = self.memory.read(address);
+                let high_byte = self.memory.read(address + 1);
+                let address = (high_byte as Word) << 8 | (low_byte as Word);
+                address.wrapping_add(self.y as Word)
+            }
             _ => unimplemented!("addressing mode {:?} not implemented", addressing_mode),
         }
     }
