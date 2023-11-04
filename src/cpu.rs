@@ -240,8 +240,8 @@ impl Cpu {
         self.branch_if(|cpu| !cpu.status.contains(ProcessorStatus::Negative));
     }
 
-    fn execute_brk(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_brk(&mut self, _: AddressingMode) {
+        panic!("BRK at {:#04X}", self.pc - 1);
     }
 
     fn execute_bvc(&mut self, addressing_mode: AddressingMode) {
