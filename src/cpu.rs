@@ -193,11 +193,15 @@ impl Cpu {
     }
 
     fn execute_bcc(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| !cpu.status.contains(ProcessorStatus::Carry));
     }
 
     fn execute_bcs(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        debug_assert_eq!(addressing_mode, AddressingMode::Relative);
+
+        self.branch_if(|cpu| cpu.status.contains(ProcessorStatus::Carry));
     }
 
     fn execute_beq(&mut self, addressing_mode: AddressingMode) {
@@ -483,6 +487,13 @@ impl Cpu {
         self.sp = self.sp.checked_add(1).expect("stack underflow");
         let address = STACK_START + self.sp as Word;
         self.memory.read(address)
+    }
+
+    fn branch_if(&mut self, f: fn(&mut Cpu) -> bool) {
+        let value = self.fetch_and_advance_pc();
+        if f(self) {
+            self.pc += value as Word;
+        }
     }
 
     fn execute_on_acc_or_memory(
