@@ -28,10 +28,17 @@ impl Memory {
     }
 
     pub fn read(&self, address: Word) -> Byte {
+        if address == 0x0F {
+            // can't read from stdout
+            panic!("read at 0x0F");
+        }
         self.data[address as usize]
     }
 
     pub fn write(&mut self, address: Word, data: Byte) {
+        if address == 0x0F {
+            print!("{}", data as char);
+        }
         self.data[address as usize] = data;
     }
 }
