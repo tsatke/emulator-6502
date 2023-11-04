@@ -121,7 +121,7 @@ impl Cpu {
             Opcode::Pla => Self::execute_pla,
             Opcode::Plp => Self::execute_plp,
             Opcode::Rol => Self::execute_rol,
-            Opcode::Ror => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Ror => Self::execute_ror,
             Opcode::Rti => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rts => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Sbc => todo!("{:?} not yet implemented", instruction.opcode),
@@ -235,6 +235,31 @@ impl Cpu {
         let address = self.resolve_argument_address(addressing_mode);
         let value = self.memory.read(address);
         let new_value = rol(self, value);
+        self.memory.write(address, new_value);
+    }
+
+    fn execute_ror(&mut self, addressing_mode: AddressingMode) {
+        let ror = |cpu: &mut Cpu, value: Byte| -> Byte {
+            let mut new_value = value >> 1;
+            if cpu.status.contains(ProcessorStatus::Carry) {
+                new_value |= 0b1000_0000;
+            }
+            cpu.set_zero_and_negative_flags(new_value);
+            cpu.a = new_value;
+            cpu.status
+                .set(ProcessorStatus::Carry, value & 0b0000_0001 > 0);
+            new_value
+        };
+
+        if addressing_mode == AddressingMode::Accumulator {
+            let value = self.a;
+            self.a = ror(self, value);
+            return;
+        }
+
+        let address = self.resolve_argument_address(addressing_mode);
+        let value = self.memory.read(address);
+        let new_value = ror(self, value);
         self.memory.write(address, new_value);
     }
 
