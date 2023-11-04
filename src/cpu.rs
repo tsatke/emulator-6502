@@ -119,7 +119,7 @@ impl Cpu {
             Opcode::Pha => Self::execute_pha,
             Opcode::Php => Self::execute_php,
             Opcode::Pla => Self::execute_pla,
-            Opcode::Plp => todo!("{:?} not yet implemented", instruction.opcode),
+            Opcode::Plp => Self::execute_plp,
             Opcode::Rol => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Ror => todo!("{:?} not yet implemented", instruction.opcode),
             Opcode::Rti => todo!("{:?} not yet implemented", instruction.opcode),
@@ -205,6 +205,11 @@ impl Cpu {
         assert_eq!(addressing_mode, AddressingMode::Implicit);
         self.a = self.pop();
         self.set_zero_and_negative_flags(self.a);
+    }
+
+    fn execute_plp(&mut self, addressing_mode: AddressingMode) {
+        assert_eq!(addressing_mode, AddressingMode::Implicit);
+        self.status = ProcessorStatus::from_bits_truncate(self.pop());
     }
 
     fn push(&mut self, byte: Byte) {
