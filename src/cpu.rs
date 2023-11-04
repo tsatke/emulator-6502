@@ -271,23 +271,14 @@ impl Cpu {
     }
 
     fn execute_jmp(&mut self, addressing_mode: AddressingMode) {
-        let low_byte = self.fetch_and_advance_pc();
-        let high_byte = self.fetch_and_advance_pc();
-        let mut address = (high_byte as Word) << 8 | (low_byte as Word);
-        if addressing_mode == AddressingMode::Indirect {
-            let low_byte = self.memory.read(address);
-            let high_byte = self.memory.read(address + 1);
-            address = (high_byte as Word) << 8 | (low_byte as Word);
-        }
+        let address = self.resolve_argument_address(addressing_mode);
         self.pc = address;
     }
 
     fn execute_jsr(&mut self, addressing_mode: AddressingMode) {
         debug_assert_eq!(addressing_mode, AddressingMode::Absolute);
 
-        let low_byte = self.fetch_and_advance_pc();
-        let high_byte = self.fetch_and_advance_pc();
-        let address = (high_byte as Word) << 8 | (low_byte as Word);
+        let address = self.resolve_argument_address(addressing_mode);
         let return_address = self.pc - 1;
         self.push((return_address >> 8) as Byte);
         self.push((return_address & 0xFF) as Byte);
@@ -527,6 +518,14 @@ impl Cpu {
                 let high_byte = self.fetch_and_advance_pc();
                 let address = (high_byte as Word) << 8 | (low_byte as Word);
                 address.wrapping_add(self.y as Word)
+            }
+            AddressingMode::Indirect => {
+                let low_byte = self.fetch_and_advance_pc();
+                let high_byte = self.fetch_and_advance_pc();
+                let address = (high_byte as Word) << 8 | (low_byte as Word);
+                let low_byte = self.memory.read(address);
+                let high_byte = self.memory.read(address + 1);
+                (high_byte as Word) << 8 | (low_byte as Word)
             }
             _ => unimplemented!("addressing mode {:?} not implemented", addressing_mode),
         }
