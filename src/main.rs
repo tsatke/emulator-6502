@@ -5,10 +5,12 @@ fn main() {
     let mut mem = Memory::new();
 
     [
-        0xA9, 0x11, // LDA #0x11
-        0xA2, 0x20, // LDX #0x20
-        0xA0, 0x40, // LDY #0x40
-        0x4A, // LSR A
+        0xA9, 0x01, // LDA #0x01
+        0x20, 0x08, 0xC0, // JSR 0xC008
+        0x4C, 0x0B, 0xC0, // JMP 0xC00B
+        0xA2, 0x02, // LDX #0x02
+        0x60, // RTS
+        0xA0, 0x03, // LDY #0x03
     ]
     .into_iter()
     .enumerate()
@@ -17,8 +19,5 @@ fn main() {
     });
 
     let mut cpu = Cpu::new(mem);
-    cpu.run(Some(3));
-    println!("{:#X?}", cpu);
-    cpu.run(Some(1));
-    println!("{:#X?}", cpu);
+    cpu.run(Some(6));
 }
