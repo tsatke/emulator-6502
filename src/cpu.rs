@@ -181,7 +181,15 @@ impl Cpu {
     }
 
     fn execute_asl(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        let asl = |cpu: &mut Cpu, value: Byte| -> Byte {
+            cpu.status
+                .set(ProcessorStatus::Carry, value & 0b1000_0000 > 0);
+            let new_value = value << 1;
+            cpu.set_zero_and_negative_flags(new_value);
+            new_value
+        };
+
+        self.execute_on_acc_or_memory(addressing_mode, asl);
     }
 
     fn execute_bcc(&mut self, addressing_mode: AddressingMode) {
@@ -376,16 +384,7 @@ impl Cpu {
             new_value
         };
 
-        if addressing_mode == AddressingMode::Accumulator {
-            let value = self.a;
-            self.a = rol(self, value);
-            return;
-        }
-
-        let address = self.resolve_argument_address(addressing_mode);
-        let value = self.memory.read(address);
-        let new_value = rol(self, value);
-        self.memory.write(address, new_value);
+        self.execute_on_acc_or_memory(addressing_mode, rol);
     }
 
     fn execute_ror(&mut self, addressing_mode: AddressingMode) {
@@ -401,16 +400,7 @@ impl Cpu {
             new_value
         };
 
-        if addressing_mode == AddressingMode::Accumulator {
-            let value = self.a;
-            self.a = ror(self, value);
-            return;
-        }
-
-        let address = self.resolve_argument_address(addressing_mode);
-        let value = self.memory.read(address);
-        let new_value = ror(self, value);
-        self.memory.write(address, new_value);
+        self.execute_on_acc_or_memory(addressing_mode, ror);
     }
 
     fn execute_rti(&mut self, addressing_mode: AddressingMode) {
@@ -493,6 +483,23 @@ impl Cpu {
         self.sp = self.sp.checked_add(1).expect("stack underflow");
         let address = STACK_START + self.sp as Word;
         self.memory.read(address)
+    }
+
+    fn execute_on_acc_or_memory(
+        &mut self,
+        addressing_mode: AddressingMode,
+        f: impl Fn(&mut Cpu, Byte) -> Byte,
+    ) {
+        if addressing_mode == AddressingMode::Accumulator {
+            let value = self.a;
+            self.a = f(self, value);
+            return;
+        }
+
+        let address = self.resolve_argument_address(addressing_mode);
+        let value = self.memory.read(address);
+        let new_value = f(self, value);
+        self.memory.write(address, new_value);
     }
 
     fn resolve_argument_address(&mut self, addressing_mode: AddressingMode) -> Word {
