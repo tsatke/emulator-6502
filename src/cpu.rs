@@ -273,15 +273,23 @@ impl Cpu {
     }
 
     fn execute_cmp(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.execute_compare(addressing_mode, self.a);
     }
 
     fn execute_cpx(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.execute_compare(addressing_mode, self.x);
     }
 
     fn execute_cpy(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+        self.execute_compare(addressing_mode, self.y);
+    }
+
+    fn execute_compare(&mut self, addressing_mode: AddressingMode, v: Byte) {
+        let value = self.resolve_argument_value(addressing_mode);
+
+        let (new_value, carry) = v.overflowing_sub(value);
+        self.status.set(ProcessorStatus::Carry, !carry);
+        self.set_zero_and_negative_flags(new_value);
     }
 
     fn execute_dec(&mut self, addressing_mode: AddressingMode) {
