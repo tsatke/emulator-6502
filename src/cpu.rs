@@ -471,16 +471,16 @@ impl Cpu {
         todo!()
     }
 
-    fn execute_sec(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_sec(&mut self, _: AddressingMode) {
+        self.status.insert(ProcessorStatus::Carry);
     }
 
-    fn execute_sed(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_sed(&mut self, _: AddressingMode) {
+        self.status.insert(ProcessorStatus::DecimalMode);
     }
 
-    fn execute_sei(&mut self, addressing_mode: AddressingMode) {
-        todo!()
+    fn execute_sei(&mut self, _: AddressingMode) {
+        self.status.insert(ProcessorStatus::InterruptDisable);
     }
 
     fn execute_sta(&mut self, addressing_mode: AddressingMode) {
